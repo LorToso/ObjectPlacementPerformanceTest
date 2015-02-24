@@ -2,12 +2,13 @@ using System;
 
 namespace ObjectPlacementPerformanceTest
 {
-	public class MatrixModel : ObjectContainer
+	public class MapModel : ObjectContainer
 	{
-		public MatrixModel(int nWidth, int nHeight)
+		public MapModel(int nWidth, int nHeight)
 			:base(nWidth, nHeight)
 		{
 		}
+
 		#region implemented abstract members of ObjectContainer
 		public override void addObject (Actor actor, int x, int y)
 		{

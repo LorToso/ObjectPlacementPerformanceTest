@@ -39,6 +39,7 @@
     <Compile Include="ObjectContainer.cs" />
     <Compile Include="Actor.cs" />
     <Compile Include="MatrixModel.cs" />
+    <Compile Include="MapModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
