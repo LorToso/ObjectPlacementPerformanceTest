@@ -10,14 +10,15 @@ namespace ObjectPlacementPerformanceTest
 		{
 			Console.WriteLine ("Start!");
 
-			int nObjectCount = 1000;
-			int nWidth = 100;
-			int nHeight = 100;
+			int nObjectCount = 4000;
+			int nWidth = 200;
+			int nHeight = 200;
 
 
 			World matrixModel = new MatrixModel (nWidth, nHeight);
 			World mapModel = new MapModel (nWidth, nHeight);
 
+			//Console.WriteLine ("Adding " + nObjectCount + " Objects);
 			
 			Random random = new Random ();
 			for (int i=0; i < nObjectCount; i++) {
@@ -26,10 +27,10 @@ namespace ObjectPlacementPerformanceTest
 				int y = random.Next (nHeight);
 				matrixModel.addObject (actor, x, y);
 				mapModel.addObject (actor, x, y);
-				Console.WriteLine ("Adding Object " + actor.Id + "at (" + x + "|" + y + "). Size + " + actor.Width + "x" + actor.Height);
+				//Console.WriteLine ("Adding Object " + actor.Id + "at (" + x + "|" + y + "). Size + " + actor.Width + "x" + actor.Height);
 			}
 
-			int executionTimes = 100;
+			int executionTimes = 1000;
 
 			Console.Out.WriteLine ("Starting Tests!");
 			Console.Out.WriteLine ("World Size: " + nWidth + "x" + nHeight);
@@ -42,28 +43,54 @@ namespace ObjectPlacementPerformanceTest
 
 			for (int i = 0; i < executionTimes; i++) {
 				mapModel.testSinglePoint ();
-				mapModel.testRect ();
-				mapModel.testId (nObjectCount/2);
 			}
 			stopWatch.Stop ();
-			
-			Console.Out.WriteLine ("Elapsed Time in ms: " + stopWatch.ElapsedMilliseconds);
+			Console.Out.WriteLine (executionTimes +  " SingleTests: " + stopWatch.ElapsedMilliseconds +"ms");
 			stopWatch.Reset ();
-			
-			Console.Out.WriteLine ("MatixModel:");
 			stopWatch.Start ();
 
 			for (int i = 0; i < executionTimes; i++) {
+				mapModel.testRect ();
+			}
+			stopWatch.Stop ();
+			Console.Out.WriteLine (executionTimes +  " RectTests: " + stopWatch.ElapsedMilliseconds +"ms");
+			stopWatch.Reset ();
+			stopWatch.Start ();
+
+			for (int i = 0; i < executionTimes; i++) {
+				mapModel.testId (nObjectCount/2);
+			}
+			stopWatch.Stop ();
+			Console.Out.WriteLine (executionTimes +  " IdTests: " + stopWatch.ElapsedMilliseconds +"ms");
+			stopWatch.Reset ();
+
+
+			Console.Out.WriteLine ("MatixModel:");
+			
+			for (int i = 0; i < executionTimes; i++) {
 				matrixModel.testSinglePoint ();
+			}
+			stopWatch.Stop ();
+			Console.Out.WriteLine (executionTimes +  " SingleTests: " + stopWatch.ElapsedMilliseconds +"ms");
+			stopWatch.Reset ();
+			stopWatch.Start ();
+
+			for (int i = 0; i < executionTimes; i++) {
 				matrixModel.testRect ();
+			}
+			stopWatch.Stop ();
+			Console.Out.WriteLine (executionTimes +  " RectTests: " + stopWatch.ElapsedMilliseconds +"ms");
+			stopWatch.Reset ();
+			stopWatch.Start ();
+
+			for (int i = 0; i < executionTimes; i++) {
 				matrixModel.testId (nObjectCount/2);
 			}
 			stopWatch.Stop ();
-
-			Console.Out.WriteLine ("Elapsed Time in ms: " + stopWatch.ElapsedMilliseconds);
+			Console.Out.WriteLine (executionTimes +  " IdTests: " + stopWatch.ElapsedMilliseconds +"ms");
 			stopWatch.Reset ();
 
-			System.Threading.Thread.Sleep (10000);
+			System.Threading.Thread.Sleep (100000);
 		}
 	}
 }
