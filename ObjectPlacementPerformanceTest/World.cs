@@ -28,6 +28,10 @@ namespace ObjectPlacementPerformanceTest
 			this.nHeight = nHeight;
 		}
 
+		public void abbObject (Actor actor)
+		{
+			addObject (actor, actor.X, actor.Y);
+		}
 		public abstract void addObject (Actor actor, int x, int y);
 		public abstract List<Actor> getObjects ();
 		public abstract List<Actor> getObjectsAt(int x, int y);

@@ -1,5 +1,7 @@
 using System;
 using System.Diagnostics;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace ObjectPlacementPerformanceTest
 {
@@ -8,29 +10,57 @@ namespace ObjectPlacementPerformanceTest
 
 		public static void Main (string[] args)
 		{
+			int nObjectCount = 100;
+			int nWidth = 1000;
+			int nHeight = 1000;
+
 			Console.WriteLine ("Start!");
-
-			int nObjectCount = 4000;
-			int nWidth = 200;
-			int nHeight = 200;
-
+			Stopwatch stopWatch = new Stopwatch ();
+			stopWatch.Start ();
 
 			World matrixModel = new MatrixModel (nWidth, nHeight);
+			stopWatch.Stop ();
+			Console.WriteLine ("Creating MatrixModel took " + stopWatch.ElapsedMilliseconds + " ms");
+			stopWatch.Restart ();
 			World mapModel = new MapModel (nWidth, nHeight);
+			stopWatch.Stop ();
+			Console.WriteLine ("Creating MapModel took " + stopWatch.ElapsedMilliseconds + " ms");
+			stopWatch.Restart ();
 
-			//Console.WriteLine ("Adding " + nObjectCount + " Objects);
-			
+
+			List<Actor> newActors = new List<Actor> ();
+
 			Random random = new Random ();
 			for (int i=0; i < nObjectCount; i++) {
 				Actor actor = new Actor (nWidth, nHeight);
 				int x = random.Next (nWidth);
 				int y = random.Next (nHeight);
-				matrixModel.addObject (actor, x, y);
-				mapModel.addObject (actor, x, y);
-				//Console.WriteLine ("Adding Object " + actor.Id + "at (" + x + "|" + y + "). Size + " + actor.Width + "x" + actor.Height);
+				actor.setLocation (x, y);
+				newActors.Add (actor);
+			}
+			
+			stopWatch.Stop ();
+			Console.WriteLine ("Creating Objects took " + stopWatch.ElapsedMilliseconds + " ms");
+			stopWatch.Restart ();
+
+			foreach(Actor a in newActors){
+				matrixModel.abbObject (a);
+			}
+			
+			stopWatch.Stop ();
+			Console.WriteLine ("Adding Objects to MatrixModel took " + stopWatch.ElapsedMilliseconds + " ms");
+			stopWatch.Restart ();
+
+			foreach(Actor a in newActors){
+				mapModel.abbObject (a);
 			}
 
-			int executionTimes = 1000;
+			stopWatch.Stop ();
+			Console.WriteLine ("Adding Objects to MapModel took " + stopWatch.ElapsedMilliseconds + " ms");
+			stopWatch.Restart ();
+
+
+			int executionTimes = 1;
 
 			Console.Out.WriteLine ("Starting Tests!");
 			Console.Out.WriteLine ("World Size: " + nWidth + "x" + nHeight);
@@ -38,7 +68,6 @@ namespace ObjectPlacementPerformanceTest
 			Console.Out.WriteLine ("ExecutionTimes: " + executionTimes);
 			Console.Out.WriteLine ("MapModel:");
 
-			Stopwatch stopWatch = new Stopwatch ();
 			stopWatch.Start ();
 
 			for (int i = 0; i < executionTimes; i++) {

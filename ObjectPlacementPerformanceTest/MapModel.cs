@@ -14,6 +14,11 @@ namespace ObjectPlacementPerformanceTest
 			:base(nWidth, nHeight)
 		{
 			map = new Dictionary<Point, List<Actor>> ();
+			for (int w = 0; w < nWidth; w++) {
+				for (int h = 0; h < nHeight; h++) {
+					map.Add (new Point(w,h), new List<Actor>());
+				}
+			}
 		}
 
 		#region implemented abstract members of ObjectContainer
@@ -21,18 +26,12 @@ namespace ObjectPlacementPerformanceTest
 		{
 			for (int w=0; w < actor.Width; w++) {
 				for (int h=0; h < actor.Height; h++) {
-
+					if (x + w >= NWidth)
+						continue;
+					if (y + h >= NHeight)
+						continue;
 					Point p = new Point (x + w, y + h);
-
-					List<Actor> elementList;
-					if (!map.ContainsKey (p)) {
-						elementList = new List<Actor> ();
-						map.Add (p, elementList);
-					} else {
-						elementList = map[p];
-					}
-
-					elementList.Add (actor);
+					map[p].Add (actor);
 				}
 			}
 		}
