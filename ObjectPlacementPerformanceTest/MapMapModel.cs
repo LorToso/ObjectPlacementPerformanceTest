@@ -1,27 +1,33 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+
 
 namespace ObjectPlacementPerformanceTest
 {
-	public class MatrixModel : World
+	public class MapMapModel : World
 	{
-
-		List<Actor>[,] matrix;
+		Dictionary<Point, HashSet<Actor>> map;
 		Dictionary<int, Actor> allActors;
 
-		public MatrixModel(int nWidth, int nHeight)
+		public MapMapModel(int nWidth, int nHeight)
 			:base(nWidth, nHeight)
 		{
-			matrix = new List<Actor>[nWidth, nHeight];
+			map = new Dictionary<Point, HashSet<Actor>> ();
 			allActors = new Dictionary<int, Actor> ();
 
-			for (int w = 0; w < nWidth; w++) {
-				for (int h = 0; h < nHeight; h++) {
-					matrix [w, h] = new List<Actor> ();
+			fillMap();
+		}
+		private void fillMap()
+		{	
+			for (int w = 0; w < NWidth; w++) {
+				for (int h = 0; h < NHeight; h++) {
+					map.Add (new Point(w,h), new HashSet<Actor>());
 				}
 			}
 		}
+
 
 		#region implemented abstract members of ObjectContainer
 		public override void addObject (Actor actor, int x, int y)
@@ -33,14 +39,18 @@ namespace ObjectPlacementPerformanceTest
 						continue;
 					if (y + h >= NHeight)
 						continue;
-					matrix [x+w, y+h].Add (actor);
+					Point p = new Point (x + w, y + h);
+					map[p].Add (actor);
 				}
 			}
 			allActors.Add (actor.Id, actor);
 		}
 		public override List<Actor> getObjectsAt (int x, int y)
 		{
-			return matrix [x, y];
+			Point p = new Point (x, y);
+			if(map.ContainsKey(p))
+				return map[p].ToList();
+			else return new List<Actor>();
 		}
 		public override List<Actor> getObjects ()
 		{
@@ -56,7 +66,7 @@ namespace ObjectPlacementPerformanceTest
 						continue;
 					if (y + h >= NHeight)
 						continue;
-					matrix [x+w, y+h].Remove (actor);
+					map[new Point(x+w, y+h)].Remove(actor);
 				}
 			}
 			allActors.Remove (actor.Id);

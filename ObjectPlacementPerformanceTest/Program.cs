@@ -11,22 +11,33 @@ namespace ObjectPlacementPerformanceTest
 		public static void Main (string[] args)
 		{
 			int nObjectCount = 100;
-			int nWidth = 1000;
-			int nHeight = 1000;
+			int nWidth = 10;
+			int nHeight = 10;
 
 			Console.WriteLine ("Start!");
 			Stopwatch stopWatch = new Stopwatch ();
 			stopWatch.Start ();
 
-			World matrixModel = new MatrixModel (nWidth, nHeight);
+			World[] allWorlds = new World[3];
+
+
+			allWorlds[0] = new MatrixModel (nWidth, nHeight);
+
 			stopWatch.Stop ();
 			Console.WriteLine ("Creating MatrixModel took " + stopWatch.ElapsedMilliseconds + " ms");
 			stopWatch.Restart ();
-			World mapModel = new MapModel (nWidth, nHeight);
-			stopWatch.Stop ();
-			Console.WriteLine ("Creating MapModel took " + stopWatch.ElapsedMilliseconds + " ms");
-			stopWatch.Restart ();
 
+			allWorlds[1] = new MapListModel (nWidth, nHeight);
+
+			stopWatch.Stop ();
+			Console.WriteLine ("Creating MapListModel took " + stopWatch.ElapsedMilliseconds + " ms");
+			stopWatch.Restart ();
+			
+			allWorlds[2] = new MapMapModel (nWidth, nHeight);
+
+			stopWatch.Stop ();
+			Console.WriteLine ("Creating MapMapModel took " + stopWatch.ElapsedMilliseconds + " ms");
+			stopWatch.Restart ();
 
 			List<Actor> newActors = new List<Actor> ();
 
@@ -43,83 +54,64 @@ namespace ObjectPlacementPerformanceTest
 			Console.WriteLine ("Creating Objects took " + stopWatch.ElapsedMilliseconds + " ms");
 			stopWatch.Restart ();
 
-			foreach(Actor a in newActors){
-				matrixModel.abbObject (a);
-			}
 			
 			stopWatch.Stop ();
 			Console.WriteLine ("Adding Objects to MatrixModel took " + stopWatch.ElapsedMilliseconds + " ms");
 			stopWatch.Restart ();
 
-			foreach(Actor a in newActors){
-				mapModel.abbObject (a);
-			}
 
-			stopWatch.Stop ();
-			Console.WriteLine ("Adding Objects to MapModel took " + stopWatch.ElapsedMilliseconds + " ms");
-			stopWatch.Restart ();
-
-
-			int executionTimes = 1;
+			
+			int executionCount = 100;
 
 			Console.Out.WriteLine ("Starting Tests!");
 			Console.Out.WriteLine ("World Size: " + nWidth + "x" + nHeight);
 			Console.Out.WriteLine ("ActorCount: " + nObjectCount);
-			Console.Out.WriteLine ("ExecutionTimes: " + executionTimes);
-			Console.Out.WriteLine ("MapModel:");
+			Console.Out.WriteLine ("ExecutionCount: " + executionCount);
 
-			stopWatch.Start ();
-
-			for (int i = 0; i < executionTimes; i++) {
-				mapModel.testSinglePoint ();
+			foreach (World w in allWorlds) {
+				test (w, newActors, executionCount);
 			}
-			stopWatch.Stop ();
-			Console.Out.WriteLine (executionTimes +  " SingleTests: " + stopWatch.ElapsedMilliseconds +"ms");
-			stopWatch.Reset ();
-			stopWatch.Start ();
-
-			for (int i = 0; i < executionTimes; i++) {
-				mapModel.testRect ();
-			}
-			stopWatch.Stop ();
-			Console.Out.WriteLine (executionTimes +  " RectTests: " + stopWatch.ElapsedMilliseconds +"ms");
-			stopWatch.Reset ();
-			stopWatch.Start ();
-
-			for (int i = 0; i < executionTimes; i++) {
-				mapModel.testId (nObjectCount/2);
-			}
-			stopWatch.Stop ();
-			Console.Out.WriteLine (executionTimes +  " IdTests: " + stopWatch.ElapsedMilliseconds +"ms");
-			stopWatch.Reset ();
-
-
-			Console.Out.WriteLine ("MatixModel:");
-			
-			for (int i = 0; i < executionTimes; i++) {
-				matrixModel.testSinglePoint ();
-			}
-			stopWatch.Stop ();
-			Console.Out.WriteLine (executionTimes +  " SingleTests: " + stopWatch.ElapsedMilliseconds +"ms");
-			stopWatch.Reset ();
-			stopWatch.Start ();
-
-			for (int i = 0; i < executionTimes; i++) {
-				matrixModel.testRect ();
-			}
-			stopWatch.Stop ();
-			Console.Out.WriteLine (executionTimes +  " RectTests: " + stopWatch.ElapsedMilliseconds +"ms");
-			stopWatch.Reset ();
-			stopWatch.Start ();
-
-			for (int i = 0; i < executionTimes; i++) {
-				matrixModel.testId (nObjectCount/2);
-			}
-			stopWatch.Stop ();
-			Console.Out.WriteLine (executionTimes +  " IdTests: " + stopWatch.ElapsedMilliseconds +"ms");
-			stopWatch.Reset ();
 
 			System.Threading.Thread.Sleep (100000);
+		}
+		static void test(World world, List<Actor> newActors, int executionCount)
+		{
+			Stopwatch stopWatch = new Stopwatch ();
+			String name = world.GetType ().Name;
+
+			Console.Out.WriteLine (name + ":");
+
+			foreach(Actor a in newActors){
+				world.abbObject (a);
+			}
+
+			stopWatch.Stop ();
+			Console.WriteLine ("Adding Objects to " + name + " took " + stopWatch.ElapsedMilliseconds + " ms");
+			stopWatch.Restart ();
+
+
+			for (int i = 0; i < executionCount; i++) {
+				world.testSinglePoint ();
+			}
+			stopWatch.Stop ();
+			Console.Out.WriteLine (executionCount +  " SingleTests: " + stopWatch.ElapsedMilliseconds +"ms");
+			stopWatch.Reset ();
+			stopWatch.Start ();
+
+			for (int i = 0; i < executionCount; i++) {
+				world.testRect ();
+			}
+			stopWatch.Stop ();
+			Console.Out.WriteLine (executionCount +  " RectTests: " + stopWatch.ElapsedMilliseconds +"ms");
+			stopWatch.Reset ();
+			stopWatch.Start ();
+
+			for (int i = 0; i < executionCount; i++) {
+				world.testId (newActors.Count/2);
+			}
+			stopWatch.Stop ();
+			Console.Out.WriteLine (executionCount +  " IdTests: " + stopWatch.ElapsedMilliseconds +"ms");
+			stopWatch.Reset ();
 		}
 	}
 }

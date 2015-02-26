@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Drawing;
 
 namespace ObjectPlacementPerformanceTest
 {
@@ -33,6 +34,10 @@ namespace ObjectPlacementPerformanceTest
 			addObject (actor, actor.X, actor.Y);
 		}
 		public abstract void addObject (Actor actor, int x, int y);
+
+		//protected abstract void moveObject (Actor actor, int x, int y);
+		public abstract void removeObejct(Actor actor);
+
 		public abstract List<Actor> getObjects ();
 		public abstract List<Actor> getObjectsAt(int x, int y);
 		public List<Actor> getObjectsAt(int x, int y, int width, int height)
@@ -45,28 +50,27 @@ namespace ObjectPlacementPerformanceTest
 					getObjectsAt (i, j).ForEach (a => chosenActors.Add (a));
 				}
 			}
-			List<Actor> theseActors = new List<Actor> ();
 
-			foreach (var a in chosenActors)
-				theseActors.Add (a);
-
-			return theseActors;
+			return chosenActors.ToList();
 		}
 
 		public void testSinglePoint()
 		{
-			getObjectsAt (NWidth / 2, nHeight / 2).ForEach(a => a.setLocation(a.X+1, a.Y+1));
-			getObjectsAt (NWidth / 2+1, nHeight / 2+1).ForEach(a => a.setLocation(a.X-1, a.Y-1));
+			var list = getObjectsAt (NWidth / 2, NHeight / 2);
+			list.ForEach(a => {removeObejct(a); addObject(a, a.X+1, a.Y+1);});
+			list.ForEach(a => {removeObejct(a); addObject(a, a.X-1, a.Y-1);});
 		}
 		public void testRect()
 		{
-			getObjectsAt (NWidth / 4, nHeight / 4, NWidth/8, NHeight/8).ForEach(a => a.setLocation(a.X+1, a.Y+1));
-			getObjectsAt (NWidth / 4+1, nHeight / 4+1, NWidth/8, NHeight/8).ForEach(a => a.setLocation(a.X-1, a.Y-1));
+			var list = getObjectsAt (NWidth / 4, NHeight / 4, NWidth / 8, NHeight / 8);
+			list.ForEach(a => {removeObejct(a); addObject(a, a.X+1, a.Y+1);});
+			list.ForEach(a => {removeObejct(a); addObject(a, a.X-1, a.Y-1);});
 		}
 		public void testId(int maxId)
 		{
-			getObjects().Where(a => a.Id < maxId).ToList().ForEach(a => a.setLocation(a.X+1, a.Y+1));
-			getObjects().Where(a => a.Id < maxId).ToList().ForEach(a => a.setLocation(a.X-1, a.Y-1));
+			var list = getObjects ().Where (a => a.Id < maxId).ToList ();
+			list.ForEach(a => {removeObejct(a); addObject(a, a.X+1, a.Y+1);});
+			list.ForEach(a => {removeObejct(a); addObject(a, a.X-1, a.Y-1);});
 		}
 
 	}
