@@ -11,32 +11,39 @@ namespace ObjectPlacementPerformanceTest
 		public static void Main (string[] args)
 		{
 			int nObjectCount = 100;
-			int nWidth = 10;
-			int nHeight = 10;
+			int nWidth = 1000;
+			int nHeight = 1000;
 
 			Console.WriteLine ("Start!");
 			Stopwatch stopWatch = new Stopwatch ();
 			stopWatch.Start ();
 
-			World[] allWorlds = new World[3];
+			World[] allWorlds = new World[2];
 
 
-			allWorlds[0] = new MatrixModel (nWidth, nHeight);
+			allWorlds[1] = new MatrixModel (nWidth, nHeight);
 
 			stopWatch.Stop ();
 			Console.WriteLine ("Creating MatrixModel took " + stopWatch.ElapsedMilliseconds + " ms");
 			stopWatch.Restart ();
 
-			allWorlds[1] = new MapListModel (nWidth, nHeight);
+			/*allWorlds[1] = new MapListModel (nWidth, nHeight);
 
 			stopWatch.Stop ();
 			Console.WriteLine ("Creating MapListModel took " + stopWatch.ElapsedMilliseconds + " ms");
 			stopWatch.Restart ();
 			
-			allWorlds[2] = new MapMapModel (nWidth, nHeight);
+			allWorlds[1] = new MapMapModel (nWidth, nHeight);
 
 			stopWatch.Stop ();
 			Console.WriteLine ("Creating MapMapModel took " + stopWatch.ElapsedMilliseconds + " ms");
+			stopWatch.Restart ();
+			*/
+			
+			allWorlds[0] = new ListModel (nWidth, nHeight);
+
+			stopWatch.Stop ();
+			Console.WriteLine ("Creating ListModel took " + stopWatch.ElapsedMilliseconds + " ms");
 			stopWatch.Restart ();
 
 			List<Actor> newActors = new List<Actor> ();
@@ -77,6 +84,7 @@ namespace ObjectPlacementPerformanceTest
 		static void test(World world, List<Actor> newActors, int executionCount)
 		{
 			Stopwatch stopWatch = new Stopwatch ();
+			stopWatch.Start ();
 			String name = world.GetType ().Name;
 
 			Console.Out.WriteLine (name + ":");

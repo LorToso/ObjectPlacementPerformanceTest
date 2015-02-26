@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 
 namespace ObjectPlacementPerformanceTest
 {
@@ -63,6 +64,10 @@ namespace ObjectPlacementPerformanceTest
 		{
 			this.x = x;
 			this.y = y;
+		}
+		public Rectangle getRect()
+		{
+			return new Rectangle (x,y,width, height);
 		}
 
 	}
