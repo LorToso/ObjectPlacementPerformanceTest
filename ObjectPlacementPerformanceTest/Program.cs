@@ -1,7 +1,7 @@
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Diagnostics;
+using System.Threading;
 
 namespace ObjectPlacementPerformanceTest
 {
@@ -10,9 +10,9 @@ namespace ObjectPlacementPerformanceTest
 
 		public static void Main (string[] args)
 		{
-			int nObjectCount = 100;
-			int nWidth = 1000;
-			int nHeight = 1000;
+			const int nObjectCount = 100;
+			const int nWidth = 1000;
+			const int nHeight = 1000;
 
 			Console.WriteLine ("Start!");
 			Stopwatch stopWatch = new Stopwatch ();
@@ -53,7 +53,7 @@ namespace ObjectPlacementPerformanceTest
 				Actor actor = new Actor (nWidth, nHeight);
 				int x = random.Next (nWidth);
 				int y = random.Next (nHeight);
-				actor.setLocation (x, y);
+				actor.SetLocation (x, y);
 				newActors.Add (actor);
 			}
 			
@@ -68,7 +68,7 @@ namespace ObjectPlacementPerformanceTest
 
 
 			
-			int executionCount = 100;
+			const int executionCount = 100;
 
 			Console.Out.WriteLine ("Starting Tests!");
 			Console.Out.WriteLine ("World Size: " + nWidth + "x" + nHeight);
@@ -76,12 +76,12 @@ namespace ObjectPlacementPerformanceTest
 			Console.Out.WriteLine ("ExecutionCount: " + executionCount);
 
 			foreach (World w in allWorlds) {
-				test (w, newActors, executionCount);
+				TestWorld (w, newActors, executionCount);
 			}
 
-			System.Threading.Thread.Sleep (100000);
+			Thread.Sleep (100000);
 		}
-		static void test(World world, List<Actor> newActors, int executionCount)
+		static void TestWorld(World world, List<Actor> newActors, int executionCount)
 		{
 			Stopwatch stopWatch = new Stopwatch ();
 			stopWatch.Start ();
@@ -90,7 +90,7 @@ namespace ObjectPlacementPerformanceTest
 			Console.Out.WriteLine (name + ":");
 
 			foreach(Actor a in newActors){
-				world.abbObject (a);
+				world.AbbObject (a);
 			}
 
 			stopWatch.Stop ();
@@ -99,7 +99,7 @@ namespace ObjectPlacementPerformanceTest
 
 
 			for (int i = 0; i < executionCount; i++) {
-				world.testSinglePoint ();
+				world.TestSinglePoint ();
 			}
 			stopWatch.Stop ();
 			Console.Out.WriteLine (executionCount +  " SingleTests: " + stopWatch.ElapsedMilliseconds +"ms");
@@ -107,7 +107,7 @@ namespace ObjectPlacementPerformanceTest
 			stopWatch.Start ();
 
 			for (int i = 0; i < executionCount; i++) {
-				world.testRect ();
+				world.TestRect ();
 			}
 			stopWatch.Stop ();
 			Console.Out.WriteLine (executionCount +  " RectTests: " + stopWatch.ElapsedMilliseconds +"ms");
@@ -115,7 +115,7 @@ namespace ObjectPlacementPerformanceTest
 			stopWatch.Start ();
 
 			for (int i = 0; i < executionCount; i++) {
-				world.testId (newActors.Count/2);
+				world.TestId (newActors.Count/2);
 			}
 			stopWatch.Stop ();
 			Console.Out.WriteLine (executionCount +  " IdTests: " + stopWatch.ElapsedMilliseconds +"ms");

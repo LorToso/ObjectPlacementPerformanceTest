@@ -1,43 +1,41 @@
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-
 
 namespace ObjectPlacementPerformanceTest
 {
 	public class ListModel : World
 	{
-		List<Actor> actorList;
-		Dictionary<int, Actor> allActors;
+	    readonly List<Actor> _actorList;
+	    readonly Dictionary<int, Actor> _allActors;
 
 		public ListModel(int nWidth, int nHeight)
 			:base(nWidth, nHeight)
 		{
-			actorList = new List<Actor> ();
-			allActors = new Dictionary<int, Actor> ();
+			_actorList = new List<Actor> ();
+			_allActors = new Dictionary<int, Actor> ();
 		}
 
 		#region implemented abstract members of ObjectContainer
-		public override void addObject (Actor actor, int x, int y)
+		public override void AddObject (Actor actor, int x, int y)
 		{
-			actor.setLocation (x, y);
+			actor.SetLocation (x, y);
 
-			actorList.Add (actor);
-			allActors.Add (actor.Id, actor);
+			_actorList.Add (actor);
+			_allActors.Add (actor.Id, actor);
 		}
-		public override List<Actor> getObjectsAt (int x, int y)
+		public override List<Actor> GetObjectsAt (int x, int y)
 		{
-			return actorList.Where (actor => actor.getRect ().Contains (new Point (x, y))).ToList();
+			return _actorList.Where (actor => actor.GetRect ().Contains (new Point (x, y))).ToList();
 		}
-		public override List<Actor> getObjects ()
+		public override List<Actor> GetObjects ()
 		{
-			return actorList;
+			return _actorList;
 		}
-		public override void removeObejct (Actor actor)
+		public override void RemoveObejct (Actor actor)
 		{
-			actorList.Remove (actor);
-			allActors.Remove (actor.Id);
+			_actorList.Remove (actor);
+			_allActors.Remove (actor.Id);
 		}
 		#endregion
 	}

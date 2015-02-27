@@ -5,47 +5,35 @@ namespace ObjectPlacementPerformanceTest
 {
 	public class Actor
 	{
-		private int x;
+	    public int X { get; private set; }
 
-		public int X {
-			get {
-				return x;
-			}
-		}
+	    public int Y { get; private set; }
 
-		private int y;
-
-		public int Y {
-			get {
-				return y;
-			}
-		}
-
-		private int width;
+	    private readonly int _width;
 
 		public int Width {
 			get {
-				return width;
+				return _width;
 			}
 		}
 
-		private int height;
+		private readonly int _height;
 
 		public int Height {
 			get {
-				return height;
+				return _height;
 			}
 		}
 
-		private int id;
+		private readonly int _id;
 
 		public int Id {
 			get {
-				return id;
+				return _id;
 			}
 		}
 
-		private static int idCount = 0;
+		private static int _idCount;
 
 		public Actor(World world)
 			:this (world.NWidth, world.NHeight)
@@ -54,20 +42,20 @@ namespace ObjectPlacementPerformanceTest
 		public Actor(int worldWidth, int worldHeight)
 		{
 			Random random = new Random ();
-			width = random.Next (worldWidth/2);
-			height = random.Next (worldHeight/2);
-			id = idCount;
-			idCount++;
+			_width = random.Next (worldWidth/2);
+			_height = random.Next (worldHeight/2);
+			_id = _idCount;
+			_idCount++;
 		}
 
-		public void setLocation(int x, int y)
+		public void SetLocation(int x, int y)
 		{
-			this.x = x;
-			this.y = y;
+			X = x;
+			Y = y;
 		}
-		public Rectangle getRect()
+		public Rectangle GetRect()
 		{
-			return new Rectangle (x,y,width, height);
+			return new Rectangle (X,Y,_width, _height);
 		}
 
 	}
