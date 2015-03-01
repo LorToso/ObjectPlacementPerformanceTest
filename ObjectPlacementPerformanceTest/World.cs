@@ -5,7 +5,7 @@ namespace ObjectPlacementPerformanceTest
 {
 	public abstract class World
 	{
-	    readonly int _nWidth;
+	    int _nWidth;
 
 		public int NWidth {
 			get {
@@ -13,7 +13,7 @@ namespace ObjectPlacementPerformanceTest
 			}
 		}
 
-	    readonly int _nHeight;
+	    int _nHeight;
 
 		public int NHeight {
 			get {
@@ -21,10 +21,14 @@ namespace ObjectPlacementPerformanceTest
 			}
 		}
 
+	    protected World()
+	    {
+	    }
+
 	    protected World(int nWidth, int nHeight)
 		{
-			_nWidth = nWidth;
-			_nHeight = nHeight;
+            SetSize(nWidth, nHeight);
+            Init();
 		}
 
 		public void AbbObject (Actor actor)
@@ -33,7 +37,6 @@ namespace ObjectPlacementPerformanceTest
 		}
 		public abstract void AddObject (Actor actor, int x, int y);
 
-		//protected abstract void moveObject (Actor actor, int x, int y);
 		public abstract void RemoveObejct(Actor actor);
 
 		public abstract List<Actor> GetObjects ();
@@ -71,6 +74,14 @@ namespace ObjectPlacementPerformanceTest
 			list.ForEach(a => {RemoveObejct(a); AddObject(a, a.X-1, a.Y-1);});
 		}
 
+	    public void SetSize(int width, int height)
+        {
+            _nWidth = width;
+            _nHeight = height;
+	    }
+
+	    public abstract void Init();
+	    public abstract void Reset();
 	}
 }
 

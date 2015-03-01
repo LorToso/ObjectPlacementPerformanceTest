@@ -25,33 +25,32 @@ ListModel: Stores objects in a simple List of objects (List<Actor>). To search f
 # TestResult
 World size: 1000x1000
 ObjectCount: 100 
-ExecutionCount for each test: 100
 
 MatrixListModel:
-Creating Map: 147ms
-Adding Objects: 2099ms
-PositionTest: 108100ms
-RectTest: 99021ms
-IDTest: 260015ms
+Creating Map: 147ms | 153ms | 143ms
+Adding Objects: 2099ms | 44ms | 899ms
+PositionTest: 1081ms | 2ms | 79ms
+RectTest: 990,21ms | 4ms | 282ms
+IDTest: 2600,15ms | 27ms | 830ms
 
 MapListModel:
-Creating Map: 28071ms
-Adding Objects: 235962ms
-PositionTest: Xms
-RectTest: Xms
-IDTest: Xms
+Creating Map: 28071ms | 30394ms | 27697ms
+Adding Objects: 235962ms | 8461ms | 125499ms
+PositionTest: Xms | 283ms | 
+RectTest: Xms | 2593ms
+IDTest: Xms | 16058ms 
 
 MapMapModel:
-Creating Map: 29035ms
-Adding Objects: Xms
-PositionTest: Xms
-RectTest: Xms
-IDTest: Xms
+Creating Map: 29035ms | 29155ms | 27408ms
+Adding Objects: Xms | 8461ms
+PositionTest: Xms | 297ms
+RectTest: Xms | 2593ms
+IDTest: Xms | 15674ms
 
 ListModel:
-Creating Map: 0ms
-Adding Objects: Xms
-PositionTest: Xms
-RectTest: Xms
-IDTest: Xms
+Creating Map: 0ms | 0ms | 0ms
+Adding Objects: Xms | 0ms
+PositionTest: Xms | 0ms 
+RectTest: Xms | 46ms
+IDTest: Xms | 0ms
 

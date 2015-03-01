@@ -7,17 +7,10 @@ namespace ObjectPlacementPerformanceTest
 {
 	public class MapMapModel : World
 	{
-	    readonly Dictionary<Point, HashSet<Actor>> _map;
-	    readonly Dictionary<int, Actor> _allActors;
+	    Dictionary<Point, HashSet<Actor>> _map;
+	    Dictionary<int, Actor> _allActors;
 
-		public MapMapModel(int nWidth, int nHeight)
-			:base(nWidth, nHeight)
-		{
-			_map = new Dictionary<Point, HashSet<Actor>> ();
-			_allActors = new Dictionary<int, Actor> ();
-
-			FillMap();
-		}
+	
 		private void FillMap()
 		{	
 			for (int w = 0; w < NWidth; w++) {
@@ -70,6 +63,19 @@ namespace ObjectPlacementPerformanceTest
 			}
 			_allActors.Remove (actor.Id);
 		}
+
+        public override void Init()
+        {
+            _map = new Dictionary<Point, HashSet<Actor>>();
+            _allActors = new Dictionary<int, Actor>();
+
+            FillMap();
+        }
+
+        public override void Reset()
+        {
+            Init();
+        }
 		#endregion
 	}
 }
