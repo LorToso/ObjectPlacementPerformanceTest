@@ -29,6 +29,20 @@ namespace ObjectPlacementPerformanceTest
 			return _matrix [x, y];
 		}
 
+        public override List<Actor> GetObjectsAt(int x, int y, int width, int height)
+        {
+            HashSet<Actor> chosenActors = new HashSet<Actor>();
+            for (int i = x; i < x + width; i++)
+            {
+                for (int j = y; j < y + height; j++)
+                {
+                    GetObjectsAt(i, j).ForEach(a => chosenActors.Add(a));
+                }
+            }
+
+            return chosenActors.ToList();
+        }
+
 	    public override void Init()
         {
             _matrix = new List<Actor>[NWidth, NHeight];

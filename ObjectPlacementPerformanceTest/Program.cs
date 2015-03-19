@@ -10,7 +10,7 @@ namespace ObjectPlacementPerformanceTest
 
 		public static void Main (string[] args)
 		{
-            TestParameter testParameter = new TestParameter(100000,100,100);
+            var testParameter = new TestParameter(1000,100,100);
 			
             
 		    var types = new[] {typeof (MatrixModel), typeof (MapListModel), typeof (MapMapModel), typeof (ListModel)};

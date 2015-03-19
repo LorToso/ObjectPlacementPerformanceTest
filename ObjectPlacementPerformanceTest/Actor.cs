@@ -41,7 +41,7 @@ namespace ObjectPlacementPerformanceTest
 		}
 		public Actor(int worldWidth, int worldHeight)
 		{
-			Random random = new Random ();
+			var random = new Random ();
 			_width = random.Next (worldWidth/2);
 			_height = random.Next (worldHeight/2);
 			_id = _idCount;
@@ -58,6 +58,10 @@ namespace ObjectPlacementPerformanceTest
 			return new Rectangle (X,Y,_width, _height);
 		}
 
+	    public bool IsInRect(Rectangle rectangle)
+	    {
+	        return GetRect().IntersectsWith(rectangle);
+	    }
 	}
 }
 

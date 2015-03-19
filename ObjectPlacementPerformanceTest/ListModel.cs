@@ -23,6 +23,11 @@ namespace ObjectPlacementPerformanceTest
 			return _actorList.Where (actor => actor.GetRect ().Contains (new Point (x, y))).ToList();
 		}
 
+	    public override List<Actor> GetObjectsAt(int x, int y, int width, int height)
+	    {
+	        return _actorList.Where(actor => actor.IsInRect(new Rectangle(x, y, width, height))).ToList();
+	    }
+
 	    public override void Init()
         {
             _actorList = new List<Actor>();

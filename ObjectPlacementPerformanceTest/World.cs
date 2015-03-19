@@ -41,19 +41,7 @@ namespace ObjectPlacementPerformanceTest
 
 		public abstract List<Actor> GetObjects ();
 		public abstract List<Actor> GetObjectsAt(int x, int y);
-		public List<Actor> GetObjectsAt(int x, int y, int width, int height)
-		{
-			HashSet<Actor> chosenActors = new HashSet<Actor> ();
-			for( int i=x; i < x+width; i++)
-			{	
-				for( int j=y; j < y+height; j++)
-				{
-					GetObjectsAt (i, j).ForEach (a => chosenActors.Add (a));
-				}
-			}
-
-			return chosenActors.ToList();
-		}
+	    public abstract List<Actor> GetObjectsAt(int x, int y, int width, int height);
 
 		public void TestSinglePoint()
 		{
