@@ -11,16 +11,16 @@ namespace ObjectPlacementPerformanceTest
 
 
 		#region implemented abstract members of ObjectContainer
-		public override void AddObject (Actor actor, int x, int y)
+        public override void AddObject(Actor actor, double x, double y)
 		{
 			actor.SetLocation (x, y);
-			for (int w=0; w < actor.Width; w++) {
-				for (int h=0; h < actor.Height; h++) {
+			for (var w=0; w < actor.Width; w++) {
+				for (var h=0; h < actor.Height; h++) {
 					if (x + w >= NWidth)
 						continue;
 					if (y + h >= NHeight)
 						continue;
-					Point p = new Point (x + w, y + h);
+					var p = new Point ((int) (x + w), (int) (y + h));
 					_map[p].Add (actor);
 				}
 			}
@@ -65,21 +65,29 @@ namespace ObjectPlacementPerformanceTest
 	        Init();
 	    }
 
+	    public override void MoveObject(Actor actor, double x, double y)
+        {
+            RemoveObject(actor);
+            AddObject(actor, x, y);
+	    }
+
 	    public override List<Actor> GetObjects ()
 		{
 			return _allActors.Values.ToList();
 		}
-		public override void RemoveObejct (Actor actor)
+		public override void RemoveObject (Actor actor)
 		{
-			int x = actor.X;
-			int y = actor.Y;
-			for (int w=0; w < actor.Width; w++) {
-				for (int h=0; h < actor.Height; h++) {
+			var x = actor.X;
+            var y = actor.Y;
+            for (var w = 0; w < actor.Width; w++)
+            {
+                for (var h = 0; h < actor.Height; h++)
+                {
 					if (x + w >= NWidth)
 						continue;
 					if (y + h >= NHeight)
 						continue;
-					_map[new Point(x+w, y+h)].Remove(actor);
+					_map[new Point((int) (x+w), (int) (y+h))].Remove(actor);
 				}
 			}
 			_allActors.Remove (actor.Id);

@@ -5,21 +5,9 @@ namespace ObjectPlacementPerformanceTest
 {
 	public abstract class World
 	{
-	    int _nWidth;
+	    public int NWidth { get; private set; }
 
-		public int NWidth {
-			get {
-				return _nWidth;
-			}
-		}
-
-	    int _nHeight;
-
-		public int NHeight {
-			get {
-				return _nHeight;
-			}
-		}
+	    public int NHeight { get; private set; }
 
 	    protected World()
 	    {
@@ -35,9 +23,12 @@ namespace ObjectPlacementPerformanceTest
 		{
 			AddObject (actor, actor.X, actor.Y);
 		}
-		public abstract void AddObject (Actor actor, int x, int y);
+        public abstract void AddObject(Actor actor, double x, double y);
 
-		public abstract void RemoveObejct(Actor actor);
+		public abstract void RemoveObject(Actor actor);
+
+        public abstract void MoveObject(Actor actor, double x, double y);
+
 
 		public abstract List<Actor> GetObjects ();
 		public abstract List<Actor> GetObjectsAt(int x, int y);
@@ -46,26 +37,26 @@ namespace ObjectPlacementPerformanceTest
 		public void TestSinglePoint()
 		{
 			var list = GetObjectsAt (NWidth / 2, NHeight / 2);
-			list.ForEach(a => {RemoveObejct(a); AddObject(a, a.X+1, a.Y+1);});
-			list.ForEach(a => {RemoveObejct(a); AddObject(a, a.X-1, a.Y-1);});
+			list.ForEach(a => { MoveObject(a, a.X + 1, a.Y + 1); });
+			list.ForEach(a => { MoveObject(a, a.X - 1, a.Y - 1); });
 		}
 		public void TestRect()
 		{
 			var list = GetObjectsAt (NWidth / 4, NHeight / 4, NWidth / 8, NHeight / 8);
-			list.ForEach(a => {RemoveObejct(a); AddObject(a, a.X+1, a.Y+1);});
-			list.ForEach(a => {RemoveObejct(a); AddObject(a, a.X-1, a.Y-1);});
+			list.ForEach(a => { MoveObject(a, a.X + 1, a.Y + 1); });
+            list.ForEach(a => { MoveObject(a, a.X - 1, a.Y - 1); });
 		}
 		public void TestId(int maxId)
 		{
 			var list = GetObjects ().Where (a => a.Id < maxId).ToList ();
-			list.ForEach(a => {RemoveObejct(a); AddObject(a, a.X+1, a.Y+1);});
-			list.ForEach(a => {RemoveObejct(a); AddObject(a, a.X-1, a.Y-1);});
+			list.ForEach(a => { MoveObject(a, a.X + 1, a.Y + 1); });
+            list.ForEach(a => { MoveObject(a, a.X - 1, a.Y - 1); });
 		}
 
 	    public void SetSize(int width, int height)
         {
-            _nWidth = width;
-            _nHeight = height;
+            NWidth = width;
+            NHeight = height;
 	    }
 
 	    public abstract void Init();

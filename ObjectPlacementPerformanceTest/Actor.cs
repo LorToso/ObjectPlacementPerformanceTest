@@ -5,9 +5,9 @@ namespace ObjectPlacementPerformanceTest
 {
 	public class Actor
 	{
-	    public int X { get; private set; }
+	    public double X { get; private set; }
 
-	    public int Y { get; private set; }
+        public double Y { get; private set; }
 
 	    private readonly int _width;
 
@@ -48,14 +48,14 @@ namespace ObjectPlacementPerformanceTest
 			_idCount++;
 		}
 
-		public void SetLocation(int x, int y)
+        public void SetLocation(double x, double y)
 		{
 			X = x;
 			Y = y;
 		}
 		public Rectangle GetRect()
 		{
-			return new Rectangle (X,Y,_width, _height);
+			return new Rectangle ((int) X,(int) Y,_width, _height);
 		}
 
 	    public bool IsInRect(Rectangle rectangle)

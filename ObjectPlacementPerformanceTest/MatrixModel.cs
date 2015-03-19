@@ -9,7 +9,7 @@ namespace ObjectPlacementPerformanceTest
 	    Dictionary<int, Actor> _allActors;
 
 		#region implemented abstract members of ObjectContainer
-		public override void AddObject (Actor actor, int x, int y)
+        public override void AddObject(Actor actor, double x, double y)
 		{
 			actor.SetLocation (x, y);
             for (var w = 0; w < actor.Width; w++)
@@ -19,7 +19,7 @@ namespace ObjectPlacementPerformanceTest
 						continue;
 					if (y + h >= NHeight)
 						continue;
-					_matrix [x+w, y+h].Add (actor);
+					_matrix [(int) (x+w), (int) (y+h)].Add (actor);
 				}
 			}
 			_allActors.Add (actor.Id, actor);
@@ -31,10 +31,10 @@ namespace ObjectPlacementPerformanceTest
 
         public override List<Actor> GetObjectsAt(int x, int y, int width, int height)
         {
-            HashSet<Actor> chosenActors = new HashSet<Actor>();
-            for (int i = x; i < x + width; i++)
+            var chosenActors = new HashSet<Actor>();
+            for (var i = x; i < x + width; i++)
             {
-                for (int j = y; j < y + height; j++)
+                for (var j = y; j < y + height; j++)
                 {
                     GetObjectsAt(i, j).ForEach(a => chosenActors.Add(a));
                 }
@@ -62,21 +62,27 @@ namespace ObjectPlacementPerformanceTest
             Init();
 	    }
 
+	    public override void MoveObject(Actor actor, double x, double y)
+	    {
+	        RemoveObject(actor);
+	        AddObject(actor, x, y);
+	    }
+
 	    public override List<Actor> GetObjects ()
 		{
 			return _allActors.Values.ToList();
 		}
-		public override void RemoveObejct (Actor actor)
+		public override void RemoveObject (Actor actor)
 		{
-			int x = actor.X;
-			int y = actor.Y;
-			for (int w=0; w < actor.Width; w++) {
-				for (int h=0; h < actor.Height; h++) {
+			var x = actor.X;
+			var y = actor.Y;
+			for (var w=0; w < actor.Width; w++) {
+				for (var h=0; h < actor.Height; h++) {
 					if (x + w >= NWidth)
 						continue;
 					if (y + h >= NHeight)
 						continue;
-					_matrix [x+w, y+h].Remove (actor);
+					_matrix [(int) (x+w), (int) (y+h)].Remove (actor);
 				}
 			}
 			_allActors.Remove (actor.Id);

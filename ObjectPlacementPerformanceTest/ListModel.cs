@@ -11,7 +11,7 @@ namespace ObjectPlacementPerformanceTest
 
 
 		#region implemented abstract members of ObjectContainer
-		public override void AddObject (Actor actor, int x, int y)
+        public override void AddObject(Actor actor, double x, double y)
 		{
 			actor.SetLocation (x, y);
 
@@ -39,11 +39,17 @@ namespace ObjectPlacementPerformanceTest
 	        Init();
 	    }
 
+	    public override void MoveObject(Actor actor, double x, double y)
+	    {
+            if(_actorList.Contains(actor))
+                actor.SetLocation(x,y);
+	    }
+
 	    public override List<Actor> GetObjects ()
 		{
 			return _actorList;
 		}
-		public override void RemoveObejct (Actor actor)
+		public override void RemoveObject (Actor actor)
 		{
 			_actorList.Remove (actor);
 			_allActors.Remove (actor.Id);
