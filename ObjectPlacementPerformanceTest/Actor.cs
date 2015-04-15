@@ -9,42 +9,26 @@ namespace ObjectPlacementPerformanceTest
 
         public double Y { get; private set; }
 
-	    private readonly int _width;
+	    public int Width { get; private set; }
 
-		public int Width {
-			get {
-				return _width;
-			}
-		}
+	    public int Height { get; private set; }
 
-		private readonly int _height;
+	    public int Id { get; private set; }
 
-		public int Height {
-			get {
-				return _height;
-			}
-		}
+	    private static int _idCount;
 
-		private readonly int _id;
+	    public static Actor CreateWithRandomSize(int maxWidth, int maxHeight)
+	    {
+            var actor = new Actor();
+            var random = new Random();
+            actor.Width = random.Next(maxWidth);
+            actor.Height = random.Next(maxHeight);
+	        return actor;
+	    }
 
-		public int Id {
-			get {
-				return _id;
-			}
-		}
-
-		private static int _idCount;
-
-		public Actor(World world)
-			:this (world.NWidth, world.NHeight)
+		protected Actor()
 		{
-		}
-		public Actor(int worldWidth, int worldHeight)
-		{
-			var random = new Random ();
-			_width = random.Next (worldWidth/2);
-			_height = random.Next (worldHeight/2);
-			_id = _idCount;
+			Id = _idCount;
 			_idCount++;
 		}
 
@@ -55,7 +39,7 @@ namespace ObjectPlacementPerformanceTest
 		}
 		public Rectangle GetRect()
 		{
-			return new Rectangle ((int) X,(int) Y,_width, _height);
+			return new Rectangle ((int) X,(int) Y,Width, Height);
 		}
 
 	    public bool IsInRect(Rectangle rectangle)

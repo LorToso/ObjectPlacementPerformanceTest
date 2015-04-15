@@ -104,7 +104,7 @@ namespace ObjectPlacementPerformanceTest
 	        var random = new Random();
             for (var i = 0; i < testParameter.ObjectCount; i++)
 	        {
-                var actor = new Actor(testParameter.Width, testParameter.Height);
+                var actor = Actor.CreateWithRandomSize(testParameter.Width, testParameter.Height);
                 var x = random.Next(testParameter.Width);
                 var y = random.Next(testParameter.Height);
 	            actor.SetLocation(x, y);
